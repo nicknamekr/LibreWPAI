@@ -114,7 +114,7 @@ def writePost():
 
     # 쓰레드 설정
     if autoDelayMode:
-          editedDelay = delay + random.randint(-600, 600)
+         editedDelay = delay + random.randint(-600, 600)
     else:
          editedDelay = delay
     threading.Timer(editedDelay, writePost).start()
