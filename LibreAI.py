@@ -17,7 +17,6 @@ import urllib.request
 wp = Client(url, id, pw)
 post = WordPressPost()
 openai.api_key = OpenAI_Key
-openai.api_base = 'https://api.pawan.krd/v1'
 
 if txtSaveDirectory == '/':
      os.system('clear')
