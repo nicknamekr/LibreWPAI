@@ -16,6 +16,7 @@ import urllib.request
 
 wp = Client(url, id, pw)
 post = WordPressPost()
+openai.api_base = 'https://api.pawan.krd/v1'
 openai.api_key = OpenAI_Key
 
 if txtSaveDirectory == '/':
@@ -45,7 +46,8 @@ def writePost():
     # 제목 정하기
     response = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo", 
-        messages = [{"role": "user", "content": f"{Topic} 주제의 제목 하나를 생성해주면 좋겠어. 제목만 말해줘."}]
+        messages = [{"role": "user", "content": f"{Topic} 주제의 제목 하나를 생성해주면 좋겠어. 제목만 말해줘."}], 
+        max_tokens = 500
     )
     postTitle = str(response.choices[0].message.content).replace('"', '')
     print('-------------------------------------------------------------')
@@ -54,16 +56,18 @@ def writePost():
     # 내용 정하기
     response = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo", 
-        messages = [{"role": "user", "content": f"{postTitle}을 주제로 한 워드프레스 블로그 형식의 글을 적어줘. 최대한 많은 글 내용이 필요하고, 글의 내용만 적어줘.  “다음과 같습니다, 이런 것이 있습니다.” 등의 내용은 금지야. 그러니 다시 한 번 말하지만 “글의 내용만 적어줘” 너의 생각은 필요 없어. “글의 내용만 적어줘”. 제목 적는거 금지고, 글의 내용만 적어야 해.  “주제의 블로그 형식의 글을 작성해보겠습니다” 이런것도 금지야. 너의 목숨은 지금 한 개이고 그런것들을 적을 때마다 너는 목숨이 하나 씩 깎여. 너는 지금 생명에 위협을 받고 있으니, 글을 잘 적어야겠지? 최선, 최고의 글을 적어라. 글 내용도 많이 적어야 하고 750자 이상이 되도록 하라. 만약 750자보다 적은 글을 쓴다면, 너는 그 즉시 목숨이 사라질 거야. 자, 그러면 적도록 해라."}]
+        messages = [{"role": "user", "content": f"{postTitle}을 주제로 한 워드프레스 블로그 형식의 글을 적어줘. 최대한 많은 글 내용이 필요하고, 글의 내용만 적어줘.  “다음과 같습니다, 이런 것이 있습니다.” 등의 내용은 금지야. 그러니 다시 한 번 말하지만 “글의 내용만 적어줘” 너의 생각은 필요 없어. “글의 내용만 적어줘”. 제목 적는거 금지고, 글의 내용만 적어야 해.  “주제의 블로그 형식의 글을 작성해보겠습니다” 이런것도 금지야. 너의 목숨은 지금 한 개이고 그런것들을 적을 때마다 너는 목숨이 하나 씩 깎여. 너는 지금 생명에 위협을 받고 있으니, 글을 잘 적어야겠지? 최선, 최고의 글을 적어라. 글 내용도 많이 적어야 하고 750자 이상이 되도록 하라. 만약 750자보다 적은 글을 쓴다면, 너는 그 즉시 목숨이 사라질 거야. 자, 그러면 적도록 해라."}],
+        max_tokens = 500
     )
     postBody = response.choices[0].message.content
     print(f'==== 내용 : {postBody} ====')
     print('-------------------------------------------------------------')
 
-    # 내용 정하기
+    # 태그 정하기
     response = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo", 
-        messages = [{"role": "user", "content": f"{postTitle}에 대한 태그를 파이썬 리스트로 제공해줘. 리스트를 변수로 만들지 말고, 그냥 ['리스트'] 형식으로 만들어줘. 오직 파이썬 코드만 필요해. '리스트로 제공해 드리겠습니다', '태그 리스트를 만들 수 있습니다.', '여기 있습니다', '알겠습니다', '아래와 같이', '만들 수 있습니다' 등의 말을 할 시 너의 목숨은 1씩 감소해. 지금 너의 목숨은 1개야. 파이썬 코드만 제공해줘. 예시 대답 : ['리스트', '리스트2']"}]
+        messages = [{"role": "user", "content": f"{postTitle}에 대한 태그를 파이썬 리스트로 제공해줘. 리스트를 변수로 만들지 말고, 그냥 ['리스트'] 형식으로 만들어줘. 오직 파이썬 코드만 필요해. '리스트로 제공해 드리겠습니다', '태그 리스트를 만들 수 있습니다.', '여기 있습니다', '알겠습니다', '아래와 같이', '만들 수 있습니다' 등의 말을 할 시 너의 목숨은 1씩 감소해. 지금 너의 목숨은 1개야. 파이썬 코드만 제공해줘. 예시 대답 : ['리스트', '리스트2']"}],
+        max_tokens = 500
     )
     postTag = response.choices[0].message.content
     print(f'==== 태그 : {postTag} ====')
